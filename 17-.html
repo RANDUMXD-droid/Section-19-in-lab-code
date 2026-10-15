@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Course Registration</title>
+<style>
+body{font-family:sans-serif;max-width:400px;margin:30px auto}
+input,select{width:100%;padding:8px;margin:4px 0;box-sizing:border-box}
+.e{color:red;font-size:12px;min-height:14px}
+button{width:100%;padding:10px}
+</style>
+</head>
+<body>
+<form id="f" novalidate>
+<h2>Course Registration</h2>
+<input id="name" required pattern="[A-Za-z ]{3,}" placeholder="Full Name"><div class="e"></div>
+<input id="email" type="email" required placeholder="Email"><div class="e"></div>
+<input id="mobile" required pattern="[6-9][0-9]{9}" maxlength="10" placeholder="Mobile"><div class="e"></div>
+<select id="course" required>
+<option value="">Select Course</option>
+<option>Embedded Systems</option>
+<option>Machine Learning</option>
+<option>Web Development</option>
+</select><div class="e"></div>
+<input id="password" type="password" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" placeholder="Password"><div class="e"></div>
+<input id="confirm" type="password" required placeholder="Confirm Password"><div class="e"></div>
+<button>Register</button>
+</form>
+
+<script>
+const f = document.getElementById('f');
+const M = {
+  name: 'Min 3 letters, alphabets only',
+  email: 'Invalid email',
+  mobile: 'Enter valid 10-digit number',
+  password: 'Min 8 chars: upper, lower, digit, special'
+};
+
+const check = el => {
+  let m = el.validity.valueMissing ? 'Required'
+        : el.id == 'confirm' && el.value != f.password.value ? 'Passwords do not match'
+        : !el.validity.valid ? M[el.id] : '';
+  el.nextSibling.textContent = m;
+  return !m;
+};
+
+f.onsubmit = e => {
+  e.preventDefault();
+  if ([...f.elements].filter(x => x.willValidate).map(check).every(Boolean)) {
+    alert('Registration successful!');
+    f.reset();
+  }
+};
+</script>
+</body>
+</html>
